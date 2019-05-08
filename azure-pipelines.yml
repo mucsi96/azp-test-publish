@@ -18,3 +18,4 @@ jobs:
       testResultsFormat: 'JUnit'
       testResultsFiles: 'junit.xml'
       testRunTitle: 'Static Test Results'
+      mergeTestResults: true
