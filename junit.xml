@@ -1,7 +1,7 @@
 <testsuites>
-   <testsuite time="15">
       <system-out>This is the system out 2</system-out>
       <system-err>This is the system error 2</system-err>
+   <testsuite time="15">
       <testcase name="should default path to an empty string" time="3">
          <failure message="This is the error message">This is the stack trace</failure>
          <system-out>This is the system out</system-out>
