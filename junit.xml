@@ -3,7 +3,9 @@
       <testcase name="should default path to an empty string" time="3">
          <failure message="This is the error message">This is the stack trace</failure>
          <system-out>This is the system out</system-out>
-         <system-err>This is the system error</system-err>
+         <system-err>This is the system error
+[999D[K  [2mconsole.log[22m [2mjest.test.js:5[22m
+    This is console log</system-err>
       </testcase>
       <testcase name="should default useDotNotation to true" time="5" />
    </testsuite>
