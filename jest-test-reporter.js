@@ -1,23 +1,56 @@
 const xml = require("xml");
 const fs = require("fs");
 const path = require("path");
-const report = { a: 1 };
+const testsuites = [];
+let output = [];
+let hasError = false;
 
 class JestReporter {
   constructor() {
-    report.output = [];
-    process.stdout.write = message => report.output.push(message);
-    process.stderr.write = message => report.output.push(message);
-    console.log = message => report.output.push(message);
+    output = [];
+    process.stdout.write = message => output.push(message);
+    process.stderr.write = message => {
+      output.push(message);
+      hasError = true;
+    };
   }
 
-  onTestResult(contexts, results) {}
+  onTestResult({ duration }, { testResults }) {
+    debugger;
+    testsuites.push({
+      testsuite: [
+        {
+          _attr: { time: duration / 1000 }
+        },
+        ...testResults.map(
+          ({ fullName, duration, status, failureMessages }) => ({
+            testcase: [
+              { _attr: { name: fullName, time: duration / 1000 } },
+              ...failureMessages.map(failureMessage => ({
+                failure: failureMessage
+              })),
+              hasError && {
+                failure: 'There was output on stderr'
+              },
+              /error/i.test(output) && {
+                failure: 'Output contains "error"'
+              },
+              {
+                "system-out": output.join("")
+              }
+            ].filter(Boolean)
+          })
+        )
+      ]
+    });
+    output = [];
+    hasError = false;
+  }
 
   onRunComplete() {
-    report.a = report.output.join('');
     fs.writeFileSync(
       path.resolve(__dirname, "jest-junit.xml"),
-      xml(report),
+      xml({ testsuites }),
       "utf8"
     );
   }

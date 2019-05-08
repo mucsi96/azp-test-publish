@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "jest --no-colors --reporters=\"<rootDir>/jest-test-reporter.js\""
+    "test": "jest --no-colors --reporters=\"<rootDir>/jest-test-reporter.js\"",
+    "test:debug": "node --inspect ./node_modules/jest/bin/jest.js --no-colors --reporters=\"<rootDir>/jest-test-reporter.js\""
   },
   "repository": {
     "type": "git",
