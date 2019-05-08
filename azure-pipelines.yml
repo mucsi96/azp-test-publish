@@ -17,3 +17,4 @@ jobs:
     inputs:
       testResultsFormat: 'JUnit'
       testResultsFiles: 'junit.xml'
+      testRunTitle: 'Static Test Results'
