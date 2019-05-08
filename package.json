@@ -1,0 +1,23 @@
+{
+  "name": "azp-test-publish",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest --reporters=\"<rootDir>/jest-test-reporter.js\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mucsi96/azp-test-publish.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mucsi96/azp-test-publish/issues"
+  },
+  "homepage": "https://github.com/mucsi96/azp-test-publish#readme",
+  "devDependencies": {
+    "jest": "^24.8.0",
+    "xml": "^1.0.1"
+  }
+}
