@@ -1,0 +1,19 @@
+trigger:
+- master
+
+pr:
+- master
+
+jobs:
+- job: CodeCheck
+  pool:
+    vmImage: 'ubuntu-16.04'
+  steps:
+  - script: npm install
+    displayName: Install dependencies
+
+  - task: PublishTestResults@2
+    displayName: Publish Jest Test Results
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'junit.xml'
