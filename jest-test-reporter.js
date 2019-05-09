@@ -1,56 +1,68 @@
 const xml = require("xml");
 const fs = require("fs");
 const path = require("path");
-const testsuites = [];
-let output = [];
-let hasError = false;
 
 class JestReporter {
   constructor() {
-    output = [];
-    process.stdout.write = message => output.push(message);
+    this.testsuites = [];
+    this.output = [];
+    this.hasError = false;
+
+    process.stdout.write = message => this.output.push(message);
     process.stderr.write = message => {
-      output.push(message);
-      hasError = true;
+      this.output.push(message);
+      this.hasError = true;
     };
   }
 
   onTestResult({ duration }, { testResults }) {
     debugger;
-    testsuites.push({
+    this.testsuites.push({
       testsuite: [
         {
           _attr: { time: duration / 1000 }
         },
         ...testResults.map(
           ({ fullName, duration, status, failureMessages }) => ({
-            testcase: [
-              { _attr: { name: fullName, time: duration / 1000 } },
-              ...failureMessages.map(failureMessage => ({
-                failure: failureMessage
-              })),
-              hasError && {
-                failure: 'There was output on stderr'
-              },
-              /error/i.test(output) && {
-                failure: 'Output contains "error"'
-              },
-              {
-                "system-out": output.join("")
-              }
-            ].filter(Boolean)
+            testcase: this.createTestCase({
+              fullName,
+              duration,
+              failureMessages,
+              status
+            })
           })
         )
       ]
     });
-    output = [];
-    hasError = false;
+    this.output = [];
+    this.hasError = false;
+  }
+
+  createTestCase({ fullName, duration, failureMessages, status }) {
+    const errors = [
+      status === "failed" && "Status is failed",
+      this.hasError && "There was output on stderr",
+      /error/i.test(this.output) && 'Output contains "error"'
+    ].filter(Boolean);
+
+    return [
+      { _attr: { name: fullName, time: duration / 1000 } },
+      {
+        failure: [
+          { _attr: { message: errors.join(". ") } },
+          failureMessages.join("\n")
+        ]
+      },
+      {
+        "system-out": this.output.join("")
+      }
+    ];
   }
 
   onRunComplete() {
     fs.writeFileSync(
       path.resolve(__dirname, "jest-junit.xml"),
-      xml({ testsuites }),
+      xml({ testsuites: this.testsuites }),
       "utf8"
     );
   }
