@@ -30,3 +30,11 @@ jobs:
       testResultsFiles: 'jest-junit.xml'
       testRunTitle: 'Jest Test Results'
       mergeTestResults: true
+
+  - task: PublishTestResults@2
+    displayName: Publish Jasmine Test Results
+    inputs:
+      testResultsFormat: 'JUnit'
+      testResultsFiles: 'jasmine-junit.xml'
+      testRunTitle: 'Jest Test Results'
+      mergeTestResults: true
