@@ -35,6 +35,6 @@ jobs:
     displayName: Publish Jasmine Test Results
     inputs:
       testResultsFormat: 'JUnit'
-      testResultsFiles: 'jasmine-junit.xml'
+      testResultsFiles: '*.junit.xml'
       testRunTitle: 'Jest Test Results'
       mergeTestResults: true

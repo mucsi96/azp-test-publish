@@ -1,3 +1,4 @@
 node_modules
 jest-junit.xml
 jasmine-junit.xml
+*.junit.xml
